@@ -5,15 +5,7 @@ var express = require('express')
   , app = express()
   , pg = require('pg');
 
-var conString = "postgres://nmwbbikenuhjmk:OvtioBlqH7GQT1ELRbwiGsBAss@ec2-107-20-214-225.compute-1.amazonaws.com:5572/d1dh9hfot1obun";
-
-pg.connect(conString, function(err, client) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(client);
-  }
-
+pg.connect(process.env.DATABASE_URL, function(err, client) {
   var query = client.query('SELECT * FROM your_table');
 
   query.on('row', function(row) {
