@@ -1,0 +1,5 @@
+# Node Package stuff
+node_modules/
+
+# Temp Files
+*~
