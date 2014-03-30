@@ -11,6 +11,7 @@
       <tr>
         <td>{{ reason }}</td>
         <td>
+          {{^ mentor}}
           <form>
             <fieldset>
               <input type="hidden" value={{id}} name="mentee_id" class="mentee_id">
@@ -18,6 +19,10 @@
               <button type="submit" class="btn" id="add-mentor-btn">Submit</button>
             </fieldset>
           </form>
+          {{/ mentor}}
+          {{# mentor}}
+            Already has a mentor
+          {{/ mentor}}
         </td>
       </tr>
       {{/ mentees}}

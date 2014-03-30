@@ -3,7 +3,9 @@ var app = require(APP_ROOT + '/app')
 
 app.get('/mentees', function(req, res, next) {
   db.Mentee
-    .findAll()
+    .findAll({
+      include: [db.Mentor]
+    })
     .success(function(mentees) {
       return res.render('mentees', {mentees: mentees});
     })
@@ -30,7 +32,9 @@ app.post('/mentees', function(req, res, next) {
         return next('Mentor was already has mentee');
       }
       db.Mentee
-        .find({where: {id: mentee_id}})
+        .find({
+          where: {id: mentee_id},
+        })
         .success(function(mentee) {
           if (!mentee) {
             return next('Could not find mentee with id ' + mentee_id);
