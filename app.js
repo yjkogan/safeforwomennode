@@ -3,15 +3,7 @@ require('./config');
 var express = require('express')
   , hoganEngine = require('hogan-engine')
   , app = express()
-  , pg = require('pg');
-
-pg.connect(process.env.DATABASE_URL, function(err, client) {
-  var query = client.query('SELECT * FROM mentees');
-
-  query.on('row', function(row) {
-    console.log(JSON.stringify(row));
-  });
-});
+  , db = require(APP_ROOT+'/config/db');
 
 module.exports = app;
 
@@ -49,6 +41,7 @@ app.configure(function() {
   });
 
 })
-
-app.listen(process.env.PORT);
-console.log("Listening on port " + process.env.PORT);
+db.connectDatabase(function() {
+  app.listen(process.env.PORT);
+  console.log("Listening on port " + process.env.PORT);
+});
