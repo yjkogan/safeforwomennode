@@ -17,7 +17,7 @@ set('DATABASE_URL', 'postgres://yjkogan@localhost/yjkogan');
 
 // Twilio Info
 if (process.env.NODE_ENV == 'development') {
-  var creds = yaml.load('./creds.yml');
+  var creds = yaml.load('creds.yml');
   set('ACCOUNT_SID', creds['account_sid']);
   set('AUTH_TOKEN', creds['auth_token']);
   set('TWILIO_NUMBER', creds['twilio_number']);
