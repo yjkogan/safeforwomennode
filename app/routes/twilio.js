@@ -73,15 +73,17 @@ function parseMenteeMessage(query) {
 function parseReturning(query, mentee){
   if(!mentee.mentor){
     if(!mentee.reason) {
+      value = query['Body'];
       if (!mentee.wantsMentor) {
             // give them the list of options
             sendListMessage(query, mentee)
           }
       else if(value ==1){
         //they're sending a reason, write it and tell them we'll be there
-        mentee.respose = query['Body']
+        mentee.reason = query['Body']
         mentee
-          .save(function() {
+          .save()
+          .success(function() {
             sendMessage(query['From'], MENTOR_RESPONSE);
           });
         }
@@ -89,13 +91,13 @@ function parseReturning(query, mentee){
           //want information on services
           sendMessage(query['From'], SERVICES);
         }
-      } 
+      }
       else {
           //notify them we'll be with them (they've resent after already having reason)
           sendMessage(query['From'], MENTOR_RESPONSE);
         }
       }
-   else {
+    else {
     // send message to mentor
     mentee
       .getMentor()
@@ -110,15 +112,19 @@ function sendListMessage(query, mentee) {
   {
     case '1':
       mentee.wantsMentor = '1';
-      mentee.save(function(){
-      sendMessage(query['From'], MENTOR_QUERY);
-    })
+      mentee
+        .save()
+        .success(function(){
+          sendMessage(query['From'], MENTOR_QUERY);
+        })
       break;
     case '2':
       mentee.wantsMentor = '2'
-      mentee.save(function(){
-      sendMessage(query['From'], SERVICES);
-    })
+      mentee
+        .save()
+        .success(function() {
+          sendMessage(query['From'], SERVICES);
+        });
       break;
     default:
       sendMessage(query['From'], INCORRECT_RESPONSE + RESP_LIST);
