@@ -10,3 +10,5 @@ app.get('/', function(req, res, next) {
     return res.render('index', {n_results: result.rows.length});
   });
 });
+
+require('./twilio');
