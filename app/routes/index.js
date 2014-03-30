@@ -3,12 +3,27 @@ var app = require(APP_ROOT + '/app')
 
 // Base Route
 app.get('/', function(req, res, next) {
-  db.client.query('SELECT * FROM mentees', function(err, result) {
-    if (err) {
+  db.Mentee
+    .findAll()
+    .success(function(mentees) {
+      return res.render('index', {n_results: mentees.length});
+    })
+    .error(function(err) {
       console.log(err);
-    }
-    return res.render('index', {n_results: result.rows.length});
-  });
+      return res.send(err);
+    })
+
 });
 
+<<<<<<< HEAD
 require('./twilio');
+=======
+// Only do this in development mode
+if (process.env.NODE_ENV == 'development'){
+  app.get('/reset-db', function(req, res, next) {
+    db.Mentee.sync({force: true});
+    db.Mentor.sync({force: true});
+    return res.send('Database was reset');
+  })
+}
+>>>>>>> 3197cc3c623ab745733f4eacd6343ebe5ba0176d

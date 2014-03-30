@@ -1,6 +1,12 @@
 # Node Package stuff
 node_modules/
 
+#Creds
+creds.yml
+
+# testing
+config/env.js
+
 # Temp Files
 *~
 =======
