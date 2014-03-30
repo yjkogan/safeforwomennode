@@ -7,6 +7,6 @@ app.get('/', function(req, res, next) {
     if (err) {
       console.log(err);
     }
-    return res.render('index', {n_results: result.length});
+    return res.render('index', {n_results: result.rows.length});
   });
 });
