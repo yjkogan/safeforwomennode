@@ -2,35 +2,24 @@
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th> Mentee </th>
       <th> Message </th>
       <th> Assign Mentor</th>
     </tr>
     <tbody>
+      {{# mentees}}
       <tr>
-        <td>JESSICA</td>
-        <td>I want a mentor</td>
+        <td>{{ reason }}</td>
         <td>
           <form>
             <fieldset>
-              <input type="text" placeholder="Phone number">
+              <input type="hidden" value={{id}} name="mentee_id">
+              <input type="text" placeholder="Phone number" name="phone">
               <button type="submit" class="btn">Submit</button>
             </fieldset>
           </form>
         </td>
       </tr>
-      <tr>
-        <td>Rachel</td>
-        <td>need clothing</td>
-        <td>
-          <form>
-            <fieldset>
-              <input type="text" placeholder="Phone number">
-              <button type="submit" class="btn">Submit</button>
-            </fieldset>
-          </form>
-        </td>
-      </tr>
+      {{/ mentees}}
     </tbody>
   </thead>
 </table>
