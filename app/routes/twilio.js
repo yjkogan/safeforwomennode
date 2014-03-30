@@ -23,13 +23,14 @@ my_number = process.env.MY_NUMBER;
 // Base Route
 app.get('/twilio', function(req, res, next) {
   query = req.query
-  checkMentor(query, function(mentor) {
-    if (mentor) {
-      mentor.getMentee().success(function(mentee) {
-        sendMessage(mentee.phone, query['Body']);
-      })
-    } else {
+  db.Mentor.find({ phone: query['From'] }).success(function(mentor) {
+    if(!mentor){
       parseMenteeMessage(query);
+    }
+    else {
+      mentor.getMentee().success( function(mentee) {
+      sendMessage(mentee.phone, query['Body']);
+    })
     }
   });
 });
