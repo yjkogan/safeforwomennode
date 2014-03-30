@@ -14,8 +14,8 @@ app.get('/mentees', function(req, res, next) {
 });
 
 app.post('/mentees', function(req, res, next) {
-  var mentee_id = req.query.mentee_id;
-  var mentor_phone = req.query.phone;
+  var mentee_id = req.body.mentee_id;
+  var mentor_phone = req.body.phone;
   if (!mentee_id) {
     return next('Missing a mentee_id');
   }
