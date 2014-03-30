@@ -1,6 +1,9 @@
 # Node Package stuff
 node_modules/
 
+#Creds
+creds.yml
+
 # Temp Files
 *~
 =======

@@ -1,12 +1,16 @@
-var pg = require('pg');
+var Sequelize = require('sequelize')
+  , models = require(APP_ROOT+'/app/models');
 
-module.exports.connectDatabase = function(callback) {
-  pg.connect(process.env.DATABASE_URL, function(err, client) {
-    if (err) {
-      console.log(err);
-      process.exit(-1);
-    }
-    module.exports.client = client;
-    return callback();
-  });
-}
+var sequelize = new Sequelize(process.env.DATABASE_URL);
+
+var Mentee = sequelize.define('Mentee', models.mentee)
+  , Mentor = sequelize.define('Mentor', models.mentor);
+
+Mentee.hasOne(Mentor);
+Mentor.belongsTo(Mentee);
+
+module.exports = {
+  sequelize: sequelize,
+  Mentee: Mentee,
+  Mentor: Mentor
+};

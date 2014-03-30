@@ -39,9 +39,7 @@ app.configure(function() {
   app.use(function (req, res, next) {
     res.render('errors/404', { url: req.originalUrl });
   });
-
 })
-db.connectDatabase(function() {
-  app.listen(process.env.PORT);
-  console.log("Listening on port " + process.env.PORT);
-});
+
+app.listen(process.env.PORT);
+console.log("Listening on port " + process.env.PORT);
