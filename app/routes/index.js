@@ -15,6 +15,8 @@ app.get('/', function(req, res, next) {
 
 });
 
+require('./admin');
+
 // Only do this in development mode
 if (process.env.NODE_ENV == 'development'){
   app.get('/reset-db', function(req, res, next) {
