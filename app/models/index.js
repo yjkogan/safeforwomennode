@@ -6,6 +6,7 @@ module.exports = {
       type: Sequelize.STRING,
       required: true
     },
+    wantsMentor: Sequelize.INTEGER,
     reason: Sequelize.TEXT
   },
   mentor: {
