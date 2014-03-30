@@ -23,6 +23,7 @@ if (process.env.NODE_ENV == 'development'){
   app.get('/reset-db', function(req, res, next) {
     db.Mentee.sync({force: true});
     db.Mentor.sync({force: true});
+    db.Admin.sync({force: true});
     return res.send('Database was reset');
   })
 }

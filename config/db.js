@@ -4,7 +4,8 @@ var Sequelize = require('sequelize')
 var sequelize = new Sequelize(process.env.DATABASE_URL);
 
 var Mentee = sequelize.define('Mentee', models.mentee)
-  , Mentor = sequelize.define('Mentor', models.mentor);
+  , Mentor = sequelize.define('Mentor', models.mentor)
+  , Admin = sequelize.define('Admin', models.admin);
 
 Mentee.hasOne(Mentor);
 Mentor.belongsTo(Mentee);
@@ -12,5 +13,6 @@ Mentor.belongsTo(Mentee);
 module.exports = {
   sequelize: sequelize,
   Mentee: Mentee,
-  Mentor: Mentor
+  Mentor: Mentor,
+  Admin: Admin
 };

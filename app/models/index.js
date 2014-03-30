@@ -14,5 +14,9 @@ module.exports = {
       type: Sequelize.STRING,
       required: true
     }
+  },
+  admin: {
+    email: Sequelize.STRING,
+    password: Sequelize.STRING
   }
 };
