@@ -12,8 +12,8 @@ function set(name, value) {
 set('NODE_ENV', 'development');
 
 // The port for the HTTP server to listen on
-set('PORT', 8000);
-set('DATABASE_URL', 'postgres://yjkogan@localhost/yjkogan');
+set('PORT', 5432);
+set('DATABASE_URL', 'postgres://ikpbwvrjkkccma@ec2-54-225-101-64.compute-1.amazonaws.com/dd5n435ihadob4');
 
 // Twilio Info
 if (process.env.NODE_ENV == 'development') {
