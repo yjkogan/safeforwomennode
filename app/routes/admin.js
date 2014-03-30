@@ -9,13 +9,20 @@ app.get('/mentees', function(req, res, next) {
     })
     .error(function(err) {
       console.log(err);
-      return next();
+      return next(err);
     });
 });
 
 app.post('/mentees', function(req, res, next) {
   var mentee_id = req.query.mentee_id;
   var mentor_phone = req.query.phone;
+  if (!mentee_id) {
+    return next('Missing a mentee_id');
+  }
+  if (!mentor_phone) {
+    return next('Missing phone parameter');
+  }
+
   db.Mentor
     .findOrCreate({phone: mentor_phone})
     .success(function(mentor, created) {
@@ -25,7 +32,11 @@ app.post('/mentees', function(req, res, next) {
       db.Mentee
         .find({where: {id: mentee_id}})
         .success(function(mentee) {
-          mentee.setMentor(mentor)
+          if (!mentee) {
+            return next('Could not find mentee with id ' + mentee_id);
+          }
+          mentee
+            .setMentor(mentor)
             .success(function() {
               return res.send(mentee_id);
             })
