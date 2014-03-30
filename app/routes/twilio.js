@@ -25,14 +25,14 @@ my_number = creds['my_number']
 // Base Route
 app.get('/twilio', function(req, res, next) {
   query = req.query
-  checkMentor(query, function(mentor) {
-    if(mentor){
-      mentor.getMentee().success(function(mentee) {
-        sendMessage(mentee.phone, query['Body']);
-    })
+  db.Mentor.find({ phone: query['From'] }).success(function(mentor)) {
+    if(!mentor){
+      parseMenteeMessage(query);  
     }
     else {
-      parseMenteeMessage(query);    
+      mentor.getMentee().success(function(mentee) {
+      sendMessage(mentee.phone, query['Body']);
+    })       
     }
   }
 });
