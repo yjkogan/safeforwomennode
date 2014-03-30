@@ -24,15 +24,14 @@ my_number = process.env.MY_NUMBER;
 app.get('/twilio', function(req, res, next) {
   query = req.query
   checkMentor(query, function(mentor) {
-    if(mentor){
+    if (mentor) {
       mentor.getMentee().success(function(mentee) {
         sendMessage(mentee.phone, query['Body']);
-    })
+      })
+    } else {
+      parseMenteeMessage(query);
     }
-    else {
-      parseMenteeMessage(query);    
-    }
-  }
+  });
 });
 
 function sendMessage(rec, body) {
@@ -44,11 +43,23 @@ function sendMessage(rec, body) {
     });
 }
 
+function checkMentor(query, callback) {
+  db.Mentor
+    .find({where: {phone: query['From']}})
+    .success(function(mentor) {
+      return callback(mentor);
+    })
+    .error(function(err) {
+      console.log(err);
+      return callback(null);
+    });
+}
 
 function parseMenteeMessage(query) {
-  db.Mentee.findOrCreate({ phone: query['From'] })
-  .success(function(mentee, created) {
-    if(created){
+  db.Mentee
+    .findOrCreate({ phone: query['From'] })
+    .success(function(mentee, created) {
+    if (created){
       sendMessage(query['From'], INTRO + RESP_LIST);
     }
     else
@@ -63,13 +74,15 @@ function parseReturning(query, mentee){
     if(!mentee.reason) {
       if (!mentee.wantsMentor) {
             // give them the list of options
-            sendListMessage(query, mentee, function())
-          } 
+            sendListMessage(query, mentee)
+          }
       else if(value ==1){
         //they're sending a reason, write it and tell them we'll be there
         mentee.respose = query['Body']
-        mentee.save(function())
-        sendMessage(query['From'], MENTOR_RESPONSE);
+        mentee
+          .save(function() {
+            sendMessage(query['From'], MENTOR_RESPONSE);
+          });
         }
       else if(value ==2){
           //want information on services
@@ -83,13 +96,15 @@ function parseReturning(query, mentee){
       }
    else {
     // send message to mentor
-    mentee.getMentor().success(function(mentor) {
-    sendMessage(mentor, query['Body']);
-    }
+    mentee
+      .getMentor()
+      .success(function(mentor) {
+        sendMessage(mentor, query['Body']);
+      });
   }
 }
 
-function sendListMessage(query, mentee, callback) {
+function sendListMessage(query, mentee) {
   switch(query['Body'])
   {
     case '1':
