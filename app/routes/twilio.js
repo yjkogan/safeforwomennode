@@ -1,6 +1,5 @@
 var app = require(APP_ROOT + '/app')
-  , db = require(APP_ROOT + '/config/db')
-  , yaml = require('yamljs');
+  , db = require(APP_ROOT + '/config/db');
 
 INTRO = "You've reached Safe for Women\n"
 
@@ -15,10 +14,9 @@ INCORRECT_RESPONSE = "Sorry, we could not understand your response\n"
 
 SERVICES = "For info"
 
-creds = yaml.load(APP_ROOT+'/app/routes/creds.yml');
-var client = require('twilio')(creds['account_sid'], creds['auth_token']);
-twilio_number = creds['twilio_number']
-my_number = creds['my_number']
+var client = require('twilio')(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+twilio_number = process.env.TWILIO_NUMBER;
+my_number = process.env.MY_NUMBER;
 
 // Base Route
 app.get('/twilio', function(req, res, next) {
