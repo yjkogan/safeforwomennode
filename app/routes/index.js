@@ -15,6 +15,7 @@ app.get('/', function(req, res, next) {
 
 });
 
+require('./twilio');
 require('./admin');
 
 // Only do this in development mode
