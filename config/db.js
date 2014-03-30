@@ -8,7 +8,7 @@ var Mentee = sequelize.define('Mentee', models.mentee)
   , Admin = sequelize.define('Admin', models.admin);
 
 Mentee.hasOne(Mentor);
-Mentor.belongsTo(Mentee);
+Mentor.hasOne(Mentee);
 
 module.exports = {
   sequelize: sequelize,

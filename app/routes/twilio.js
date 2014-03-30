@@ -23,13 +23,14 @@ my_number = process.env.MY_NUMBER;
 // Base Route
 app.get('/twilio', function(req, res, next) {
   query = req.query
-  db.Mentor.find({ phone: query['From'] }).success(function(mentor) {
+  db.Mentor.find({ where: {phone: query['From'] } }).success(function(mentor) {
     if(!mentor){
       parseMenteeMessage(query);
     }
     else {
       mentor.getMentee().success( function(mentee) {
-      sendMessage(mentee.phone, query['Body']);
+        console.log(mentee);
+      sendMessage(mentee['phone'], query['Body']);
     })
     }
   });
@@ -71,40 +72,39 @@ function parseMenteeMessage(query) {
 }
 
 function parseReturning(query, mentee){
-  if(!mentee.mentor){
-    if(!mentee.reason) {
-      value = query['Body'];
-      if (!mentee.wantsMentor) {
-            // give them the list of options
-            sendListMessage(query, mentee)
+  mentee.getMentor().success(function(mentor){
+    console.log(mentor);
+    if(!mentor){
+      if(!mentee.reason) {
+        value = query['Body'];
+        if (!mentee.wantsMentor) {
+              // give them the list of options
+              sendListMessage(query, mentee)
+            }
+        else if(mentee.wantsMentor ==1){
+          //they're sending a reason, write it and tell them we'll be there
+          mentee.reason = query['Body']
+          mentee
+            .save()
+            .success(function() {
+              sendMessage(query['From'], MENTOR_RESPONSE);
+            });
           }
-      else if(value ==1){
-        //they're sending a reason, write it and tell them we'll be there
-        mentee.reason = query['Body']
-        mentee
-          .save()
-          .success(function() {
+        else if(mentee.wantsMentor ==2){
+            //want information on services
+            sendMessage(query['From'], SERVICES);
+          }
+        }
+        else {
+            //notify them we'll be with them (they've resent after already having reason)
             sendMessage(query['From'], MENTOR_RESPONSE);
-          });
+          }
         }
-      else if(value ==2){
-          //want information on services
-          sendMessage(query['From'], SERVICES);
-        }
-      }
-      else {
-          //notify them we'll be with them (they've resent after already having reason)
-          sendMessage(query['From'], MENTOR_RESPONSE);
-        }
-      }
     else {
     // send message to mentor
-    mentee
-      .getMentor()
-      .success(function(mentor) {
-        sendMessage(mentor, query['Body']);
-      });
-  }
+      sendMessage(mentor['phone'], query['Body']);
+    }
+  });
 }
 
 function sendListMessage(query, mentee) {

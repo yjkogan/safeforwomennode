@@ -47,6 +47,14 @@ app.post('/mentees', function(req, res, next) {
             .error(function(err) {
               return next(err);
             });
+            mentor
+            .setMentee(mentee)
+            .success(function() {
+              
+            })
+            .error(function(err) {
+              return next(err);
+            });
         })
         .error(function(err) {
           return next(err);

@@ -2,7 +2,7 @@
 node_modules/
 
 #Creds
-./app/routes/creds.yml
+creds.yml
 
 # Temp Files
 *~
